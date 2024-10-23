@@ -14,17 +14,13 @@ if bloque_texto : bloque_texto.clear()
 else : bloque_texto = bpy.data.texts.new(name="Jiggle")
 
 coleccionHuesos = bpy.context.object.data.collections.active
-#bpy.context.object.data.collections.active.bones['Tail2'].head_local
-#print(bpy.context.object.data.name)
 
 for bone in coleccionHuesos.bones:
-    print(bone.name)
     n = coleccionHuesos.bones.keys().index(bone.name)
     boneStart = coleccionHuesos.bones[n].head_local
     boneStartname = coleccionHuesos.bones[n].name
     
     if coleccionHuesos.bones[n].children.keys():
-        print('yes')
         if n == len(coleccionHuesos.bones) - 1:
             #boneStart = coleccionHuesos.bones[n].head_local
             boneEnd   = coleccionHuesos.bones[n].head_local
@@ -33,12 +29,6 @@ for bone in coleccionHuesos.bones:
         else: boneEnd   = coleccionHuesos.bones[n+1].head_local
         boneEndname = coleccionHuesos.bones[n+1].name
         boneLength = (boneStart - boneEnd).length
-    else: print('no')
-    
-    print(n,boneStartname,"-",boneEndname)
-    print(boneStart,boneEnd)
-    print(f"""{boneLength:.3f}""")
-    print()
     
     #---https://developer.valvesoftware.com/wiki/$jigglebone
     #---replace your jigglebone code here, keep {bone.name} so that the script 
@@ -69,34 +59,7 @@ for bone in coleccionHuesos.bones:
 }}"""
     bloque_texto.write(jiggle_creator + "\n\n")
     
-    #print(jiggle_creator)
-    #carpeta_local = bpy.data.filepath
-    
     #you can uncomment these 2 lines and replace the full filepath to be created
     #if you want to directly create the script instead of copypasting it.
     #with open("C:\\Users\\grogcito\\Desktop\\gangrena.qci","a") as file:
     #    file.write(jiggle_creator + "\n\n")
-    
-
-#stuff to create a new window. Unused because it always opens a new window
-#and it leaks screen data.
-'''
-for ventana in bpy.data.screens.keys():
-    indice = bpy.data.screens.keys().index(ventana)
-    bpy.data.screens['temp'].user_clear()
-nueva_ventana1 = bpy.ops.wm.window_new()
-nueva_ventana = bpy.context.window_manager.windows[-1]
-
-nueva_ventana.screen.areas[0].spaces.active.text = bloque_texto
-bpy.ops.text.move(type='FILE_TOP')
-bpy.ops.screen.delete()
-
-#cleanup
-contador = 
-for ventana in bpy.data.screens.keys():
-     print(bpy.data.screens[ventana].name)
-     contador = contador + 1
-     print(contador)
-     conti = str(contador)
-     if ventana == ('temp.00' + conti) : bpy.data.screens[ventana].user_clear()    
-'''
