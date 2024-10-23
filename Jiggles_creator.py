@@ -17,19 +17,17 @@ coleccionHuesos = bpy.context.object.data.collections.active
 
 for bone in coleccionHuesos.bones:
     n = coleccionHuesos.bones.keys().index(bone.name)
+    LastBoneInCollection = n == len(coleccionHuesos.bones) - 1
+    boneHasChildren = coleccionHuesos.bones[n].children.keys()
     boneStart = coleccionHuesos.bones[n].head_local
-    boneStartname = coleccionHuesos.bones[n].name
-    
-    if coleccionHuesos.bones[n].children.keys():
-        if n == len(coleccionHuesos.bones) - 1:
-            #boneStart = coleccionHuesos.bones[n].head_local
+
+    if boneHasChildren:
+        if LastBoneInCollection:
             boneEnd   = coleccionHuesos.bones[n].head_local
-            boneEndname = coleccionHuesos.bones[n].name
             boneLength = (boneStart - boneEnd).length
-        else: boneEnd   = coleccionHuesos.bones[n+1].head_local
-        boneEndname = coleccionHuesos.bones[n+1].name
-        boneLength = (boneStart - boneEnd).length
-    
+        else:
+            boneEnd   = coleccionHuesos.bones[n+1].head_local
+            boneLength = (boneStart - boneEnd).length   
     #---https://developer.valvesoftware.com/wiki/$jigglebone
     #---replace your jigglebone code here, keep {bone.name} so that the script 
     #---replaces it with every bone.
@@ -38,7 +36,7 @@ for bone in coleccionHuesos.bones:
     #---yes it's annoying like that.
     #---stiffness  [0:1000] low:loose and weak, high: stiff and springy
     #---damping    [0:1000] 0:oscillates forever, 1000 stops instantly
-    #---multiply the length to get a "lower gravity effect"
+    #---Increasing the boneLength*X multiplier gives a low gravity effect.
     
     jiggle_creator = f"""$jigglebone {bone.name}
 {{
